@@ -1,0 +1,28 @@
+<ion-app>
+    <ion-split-pane contentId="main-content">
+        <ion-menu contentId="main-content" type="overlay">
+            <ion-content>
+                <ion-list id="inbox-list">
+                    <ion-list-header></ion-list-header>
+                    <ion-note></ion-note>
+                    <ion-menu-toggle auto-hide="false">
+                        <ion-item (click)="selectedIndex = 2" routerDirection="root" [routerLink]="['registers']" lines="none" detail="false" [class.selected]="selectedIndex == 2">
+                            <ion-label>Mis Registros</ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                    <ion-menu-toggle auto-hide="false">
+                        <ion-item (click)="downloadDropdowns()" lines="none" detail="false">
+                            <ion-label>Sincronizar Desplegables</ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                    <ion-menu-toggle auto-hide="false">
+                        <ion-item (click)="closeSession()" routerDirection="root" lines="none" detail="false">
+                            <ion-label>{{ sessionActive ? 'Cerrar sesión' : 'Volver al Login' }}</ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                </ion-list>
+            </ion-content>
+        </ion-menu>
+        <ion-router-outlet id="main-content"></ion-router-outlet>
+    </ion-split-pane>
+</ion-app>

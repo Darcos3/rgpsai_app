@@ -1,0 +1,773 @@
+<app-menu TitleBar="Pescador artesanal" isMenuVisible="false" isCloseVisible="true"></app-menu>
+
+<ion-content>
+
+    <!-- header fixed -->
+    <ion-grid class="ion-no-padding ion-no-margin headerGrid">
+        <ion-row class="ion-no-padding ion-no-margin">
+            <ion-col class="ion-no-padding ion-no-margin" *ngIf="id==0">
+                <ion-icon name="{{ tab0==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab0==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab1==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab1==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab2==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab2==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab3==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab3==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab4==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab4==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab5==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab5==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab6==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab6==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab7==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab7==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- zero tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==0 && id==0">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Buscar pescador registrado
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Digite cédula del pescador</ion-label>
+                    <ion-input [(ngModel)]="cedula_search"  style="text-transform: uppercase;"
+                    (ionChange)="numberValidator($event)" (keydown.space)="$event.preventDefault();"></ion-input>
+                    <small style="margin-top: 10px;">(Sin letras, espacios ni caracteres especiales Ej. -#%?/)</small>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" align="center">
+                <ion-button (click)="validateSearch()" color="success">
+                    Buscar pescador
+                </ion-button>
+            </ion-col>
+            <ion-col size="12" align="center" *ngIf="searchPesca">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- first tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==1">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Datos de la solicitud
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Radicado *</ion-label>
+                    <ion-input [(ngModel)]="filed"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Fecha de radicado *</ion-label>
+                    <ion-datetime presentation="date" [(ngModel)]="filing_date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MMM-DD"
+                        max="2030" placeholder="Seleccione la fecha"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Municipio *</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="department" [items]="lugares"
+                        itemValueField="codigo" itemTextField="nombre" [canSearch]="false" (onChange)="setVal()">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>0 && id == 0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="{{ id==0 ? '6' : '12' }}" align="center">
+                <ion-button (click)="nextTab()" [disabled]="!department || !filed || !filing_date">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- second tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==2">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Documentos de la solicitud
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Copia del documento de identificación *</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(1, $event)" [value]="copy_identification_document">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Copia OCCRE *</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(2, $event)" [value]="copy_occre">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Fotocopia de afiliación de salud *</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(3, $event)" [value]="copy_sisben">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Certificación / Acreditación *</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(4, $event)" [value]="accreditation_certificate">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" *ngIf="accreditation_certificate==='SI'">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Certificación expedida por *</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="certification_issued_by"
+                        [items]="empresas" itemValueField="id" itemTextField="name" [canSearch]="true" (onChange)="selectCertExp($event)">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6">
+                <ion-button (click)="nextTab()" [disabled]="!copy_identification_document || !copy_occre || !copy_sisben || !accreditation_certificate || !certification_issued_by">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- third tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==3">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Datos del permiso
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Vigencia del permiso (años) *</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="vigencia_permiso" (ionChange)="updateExpiration(1)" required>
+                        <ion-select-option value="5">5</ion-select-option>
+                        <ion-select-option value="4">4</ion-select-option>
+                        <ion-select-option value="3">3</ion-select-option>
+                        <ion-select-option value="2">2</ion-select-option>
+                        <ion-select-option value="1">1</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Fecha de expedición *</ion-label>
+                    <ion-datetime presentation="date" [(ngModel)]="expedition_date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MMM-DD"
+                        max="2030" placeholder="Seleccione la fecha" (ionChange)="updateExpiration(1)"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Fecha de expiración *</ion-label>
+                    <ion-input [(ngModel)]="expiration_date" readonly></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()" [disabled]="!expiration_date || !expedition_date || !vigencia_permiso">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- four tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==4">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Identificación del pescador
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col align="center">
+                <!-- <img src="{{ photo ? photo : '../../../assets/images/thumb-add-imagen.png' }}" class="imgAdd" (click)="uPloadNewPhoto()"> -->
+                
+                <ion-item button style="width: 90px; margin: 0 auto;" (click)="uPloadNewPhoto()" lines="none">
+                    <ion-thumbnail>
+                        <img src="https://backend.rgpsai.org/storage/fishermen/{{ photo }}"  *ngIf="photo != null" class="imgAdd"/>
+                        <img src="../../../assets/images/user.png"  *ngIf="photo == null" class="imgAdd"/>
+                    </ion-thumbnail>
+                    <ion-label>
+                        <ion-icon name="camera" style="background: var(--ion-color-primary);" color="light"></ion-icon>
+                    </ion-label>
+                </ion-item>
+
+                <ion-text>
+                    <p>
+                        Foto del pescador
+                    </p>
+                </ion-text>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Nombre(s) del pescador *</ion-label>
+                    <ion-input [(ngModel)]="name"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Apellido(s) del pescador *</ion-label>
+                    <ion-input [(ngModel)]="lastname"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de documento *</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="type_of_card">
+                        <ion-select-option value="UNO">CC</ion-select-option>
+                        <ion-select-option value="DOS">CE</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Número de documento *</ion-label>
+                    <ion-input [(ngModel)]="identification_number" (ionChange)="numberValidator($event)" (keydown.space)="$event.preventDefault();" type="cel"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Clasificación de certificación OCCRE</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(5, $event)" [value]="occre">
+                        <ion-item lines="none">
+                            <ion-label>RAIZAL</ion-label>
+                            <ion-radio slot="start" value="RAIZAL" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>RESIDENTE</ion-label>
+                            <ion-radio slot="start" value="RESIDENTE" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">No. de OCCRE *</ion-label>
+                    <ion-input [(ngModel)]="no_occre"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Nacionalidad</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="nationality"
+                        [items]="paises" itemValueField="codigo" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Email</ion-label>
+                    <ion-input [(ngModel)]="email" (ionChange)="validarEmail($event)"></ion-input>
+                </ion-item>
+                <small *ngIf="!emailValidate" style="color: red; margin-left:20px">
+                    Debe digitar un email valido
+                </small>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Dirección</ion-label>
+                    <ion-input [(ngModel)]="address"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Teléfono</ion-label>
+                    <ion-input [(ngModel)]="phone"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Organización / Cooperativa</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(6, $event)" [value]="organization_cooperative">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <!-- <ion-col size="12" *ngIf="organization_cooperative=='NO' "> -->
+            <ion-col size="12" *ngIf="organization_cooperative=='NO'">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Nombre de la organización *</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="organization_name"
+                        [items]="empresas" itemValueField="id" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()" [disabled]="!name || !lastname || !type_of_card || !identification_number || !no_occre || !nationality">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- five tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==5">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Descripción de actividad pesquera
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Zona de desembarque *</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="dembarque_port"
+                        [items]="dembarquePorts" itemValueField="codigo" itemTextField="nombre" [canSearch]="true">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Zona de frecuente de pesca</ion-label>
+                    <ion-input type="text" [(ngModel)]="zona_frecuente_pesca"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de embarcación artesanal</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tipo_embarcacion_artesanal">
+                        <ion-select-option *ngFor="let item of tipoEmbarcacionArnal" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="tipo_embarcacion_artesanal && tipo_embarcacion_artesanal.includes('CINCO')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Otro tipo de embarcación artesanal, ¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_tipo_embarcacion_artesanal"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de pesquería</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tipo_pesqueria" multiple="true">
+                        <ion-select-option *ngFor="let item of tiposPesqueria" value="{{ item.type_of_fishery_id }}">{{ item.description }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Artes de pesca</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="artes_pesca" multiple="true">
+                        <ion-select-option *ngFor="let item of artesPesca" value="{{ item.fishing_art_id }}">{{ item.description }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col *ngIf="actualTab>0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- six tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==6">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Embarcaciones
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Reporta embarcación</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(7, $event)" [value]="reporta_embarcacion">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" class="radios" *ngIf="reporta_embarcacion=='SI'">
+                <ion-label position="stacked">Propietario de la embarcación</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(8, $event)" [value]="propietario_embarcacion">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" *ngIf="reporta_embarcacion=='SI'">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Documento que lo acredita</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="documento_acredita">
+                        <ion-select-option *ngFor="let item of documentoAcredita" value="{{ item.description }}">{{ item.description }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            
+            <ion-col size="12" *ngIf="reporta_embarcacion=='SI'">
+                <ion-row>
+                    <ion-col size="9">
+                        <ion-item lines="none">
+                            <ion-label position="stacked">Buscar embarcación</ion-label>
+                            <ion-input type="text" [(ngModel)]="search_vessel_field" placeholder="Registration number"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="3">
+                        <ion-button size="small" style="margin-top:50px" (click)="searchVessel()">
+                            <ion-icon name="add-outline" class="noStyles"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="data_boats && data_boats.length>0 && reporta_embarcacion=='SI'">
+                <ion-row>
+                    <ion-col size="1"></ion-col>
+                    <ion-col size="10">
+                        <h5>
+                            Embarcaciones asociadas
+                        </h5>
+                        <ion-row *ngFor="let item of data_boats; index as i">
+                            <ion-col size="10">
+                                {{ item.boat_request_id }} - {{ item.nombre }}
+                                <!-- {{ item.registration_number }} - {{ item.name }} -->
+                            </ion-col>
+                            <ion-col>
+                                <ion-icon name="trash-outline" class="noStyles" (click)="deleteVesselAsociate(item.registration_number)"></ion-icon>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+
+            <ion-col *ngIf="actualTab>0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- seven tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==7">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Información socioeconómica
+                    </h2>
+                </ion-text>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Fecha de nacimiento </ion-label>
+                    <ion-datetime presentation="date" [(ngModel)]="birthdate" displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MMM-DD"
+                        max="2030" placeholder="Seleccione la fecha" (ionChange)="calculateAge()"></ion-datetime>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Edad</ion-label>
+                    <ion-input type="text" [(ngModel)]="age" placeholder="Seleccione fecha de nacimiento" readonly></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Sexo</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="genre">
+                        <ion-select-option *ngFor="let item of genres" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Estado civil</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="marital_state">
+                        <ion-select-option *ngFor="let item of maritalStates" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="marital_state && marital_state.includes('CINCO')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Otro estado civil, ¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_marital_state"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Lee y escribe</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(9, $event)" [value]="read_write">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Nivel educativo del pescador</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="education_level">
+                        <ion-select-option *ngFor="let item of educationLevels" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="education_level && education_level.includes('SEIS')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Otro nivel educativo, ¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_education_level"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" class="radios">
+                <ion-label position="stacked">Posee casa propia</ion-label>
+                <ion-list>
+                    <ion-radio-group (ionChange)="selectedRadio(10, $event)" [value]="own_home">
+                        <ion-item lines="none">
+                            <ion-label>SI</ion-label>
+                            <ion-radio slot="start" value="SI" mode="md"></ion-radio>
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-label>NO</ion-label>
+                            <ion-radio slot="start" value="NO" mode="md"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de servicio de salud</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="healt_service">
+                        <ion-select-option *ngFor="let item of servicesHealt" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="healt_service && healt_service.includes('CUATRO')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Otro tipo de servicio de salud, ¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_healt_service"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tiempo en la pesca</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="pesca_time">
+                        <ion-select-option *ngFor="let item of timePesca" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="pesca_time && pesca_time.includes('CUATRO')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Otro, ¿Cuántos?</ion-label>
+                    <ion-input [(ngModel)]="otro_pesca_time"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Dedicación</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="dedication">
+                        <ion-select-option *ngFor="let item of dedicationDrop" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Horario de pesca</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="hour_pesca">
+                        <ion-select-option *ngFor="let item of horarioPesca" value="{{ item.codigo }}">{{ item.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col *ngIf="actualTab>0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- eight tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==8">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Observaciones
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Observaciones</ion-label>
+                    <ion-textarea [(ngModel)]="observations" maxLength="800"></ion-textarea>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col *ngIf="actualTab>0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="saveInLocal()">
+                    Finalizar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

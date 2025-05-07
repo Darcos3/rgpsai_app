@@ -1,0 +1,967 @@
+<app-menu
+    TitleBar="{{ tipo_registro==1 ? 'Inspección' : 'Registro' }} Artesanal"
+    isMenuVisible="false" isCloseVisible="true"></app-menu>
+
+<ion-content>
+
+    <!-- header fixed -->
+    <ion-grid class="ion-no-padding ion-no-margin headerGrid">
+        <ion-row class="ion-no-padding ion-no-margin">
+            <ion-col class="ion-no-padding ion-no-margin" *ngIf="id==0">
+                <ion-icon name="{{ tab0==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab0==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab1==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab1==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab2==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab2==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab3==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab3==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab4==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab4==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab5==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab5==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab6==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab6==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+            <ion-col class="ion-no-padding ion-no-margin">
+                <ion-icon name="{{ tab7==1 ? 'checkmark-circle-outline' :
+                    'ellipse-outline' }}" [ngClass]="tab7==1 ? 'active' :
+                    'inactive'"></ion-icon><br>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- zero tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==0 && id==0">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Buscar embarcación
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Digite matricula de la embarcación</ion-label>
+                    <ion-input [(ngModel)]="matricula_search"  style="text-transform: uppercase;"
+                    (ionChange)="inputValidator($event)" (keydown.space)="$event.preventDefault();"></ion-input>
+                    <small style="margin-top: 10px;">(Sin espacios ni caracteres especiales Ej. -#%?/)</small>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" align="center">
+                <ion-button (click)="validateSearch()" color="success">
+                    Buscar embarcación
+                </ion-button>
+            </ion-col>
+            <ion-col size="12" align="center" *ngIf="searchBoat">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- first tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==1">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Datos de solicitud
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de registro *</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tipo_registro" (ionChange)="updateValues()">
+                        <ion-select-option value="1">Inspección Motonave</ion-select-option>
+                        <ion-select-option value="2">Registro Motonave</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_registro && tipo_registro==1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Lugar *</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="lugar" [items]="lugares"
+                        itemValueField="cod" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_registro && tipo_registro==1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Fecha de expedición *</ion-label>
+                    <ion-datetime presentation="date" [(ngModel)]="fecha_expedicion" displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MMM-DD"
+                        max="2030" placeholder="Seleccione la fecha"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_registro && tipo_registro==1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Radicado</ion-label>
+                    <ion-input [(ngModel)]="radicado"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>0 && id == 0" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="{{ id==0 ? '6' : '12' }}" align="center">
+                <!-- <ion-button (click)="nextTab()" [disabled]="!lugar || !fecha_expedicion"> -->
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- second tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==2">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Datos del permisionario
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_registro && tipo_registro==2">
+                <ion-item lines="none">
+                    <ion-text>
+                        No necesarios para este tipo de registro
+                    </ion-text>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_registro && tipo_registro==1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Permisionario y/o Titular</ion-label>
+                    <ion-input [(ngModel)]="permisionario"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_registro && tipo_registro==1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Número de NIT</ion-label>
+                    <ion-row>
+                        <ion-col size="9">
+                            <ion-input type="number" 
+                                pattern="[0-9]" 
+                                onkeypress="return !(event.charCode == 46 || event.charCode == 45 || event.charCode == 44 )" step="1"
+                                (ionChange)="nitValidator($event)" 
+                                (keydown.space)="$event.preventDefault();" [(ngModel)]="nit"  
+                                placeholder="8019345678"></ion-input>
+                        </ion-col>
+                        <ion-col size="1" align="center">
+                            <p>
+                                -
+                            </p>
+                        </ion-col>
+                        <ion-col size="2">
+                            <ion-input type="number" [(ngModel)]="codigo_verificacion" placeholder="1"></ion-input>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>1" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6">
+                <!-- <ion-button (click)="nextTab()" [disabled]="tipo_registro!=2 && (nit && !codigo_verificacion) || (codigo_verificacion && !nit)"> -->
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- third tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==3">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Identificación de la Embarcación
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Nombre del Representante de la Embarcación</ion-label>
+                    <ion-input type="text" [(ngModel)]="nombre_representante"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de identificación</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tipo_identificacion_representante">
+                        <ion-select-option value="1">C.C</ion-select-option>
+                        <ion-select-option value="2">C.E</ion-select-option>
+                        <ion-select-option value="3">Otro</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_identificacion_representante && tipo_identificacion_representante == 3">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input type="text" [(ngModel)]="otro_tipo_identificacion_representante"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Número de Identificación</ion-label>
+                    <ion-input type="text" [(ngModel)]="numero_identificacion_representante" (ionChange)="numberValidator($event)" (keydown.space)="$event.preventDefault();"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Cargo del representante</ion-label>
+                    <ion-input type="text" [(ngModel)]="cargo_representante"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Nombre del Barco</ion-label>
+                    <ion-input [(ngModel)]="nombre_barco"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12"  *ngIf="tipo_registro && tipo_registro==2">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Tiene Matrícula *?</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tiene_matricula">
+                        <ion-select-option value="1">Si</ion-select-option>
+                        <ion-select-option value="2">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tiene_matricula && tiene_matricula == 1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Número de la Matrícula
+                        {{ tipo_registro==1 ? '*' : null }}</ion-label>
+                    <small>(Sin espacios ni caracteres especiales Ej. -#%?/)</small>
+                    <ion-input [(ngModel)]="numero_matricula" (ionChange)="inputValidator($event)"
+                        style="text-transform: uppercase;" (keydown.space)="$event.preventDefault();"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tiene_matricula && tiene_matricula == 1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Lugar de expedición Matrícula</ion-label>
+                    <ion-input [(ngModel)]="lugar_matricula"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tiene_matricula && tiene_matricula == 1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Fecha de expedición Matrícula</ion-label>
+                    <ion-datetime presentation="date" [(ngModel)]="fecha_matricula" displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MMM-DD"
+                        max="2030" placeholder="Seleccione la fecha"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tiene_matricula && tiene_matricula == 1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Fecha de vencimiento Matrícula</ion-label>
+                    <ion-datetime presentation="date" [(ngModel)]="vencimiento_matricula" displayFormat="YYYY-MM-DD"
+                        pickerFormat="YYYY-MMM-DD" max="2030" placeholder="Seleccione la fecha"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>1" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()"
+                    [disabled]="!tiene_matricula || tiene_matricula == 1 && !numero_matricula">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- four tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==4">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Datos del registro
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_registro && tipo_registro==1">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Estado del pabellón (Bandera)</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="bandera" [items]="countries"
+                        itemValueField="code" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Puerto de Registro</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="puerto_registro"
+                        [items]="portsRegister" itemValueField="codigo" itemTextField="nombre" [canSearch]="true">
+                    </ionic-selectable> -->
+                    <ion-select placeholder="Seleccione" [(ngModel)]="puerto_registro">
+                        <ion-select-option value="{{ m.codigo }}" *ngFor="let m of portsRegister">{{ m.nombre }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="puerto_registro && puerto_registro.codigo == 98">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_puerto_registro"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Puerto de desembarque</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="puerto_desembarque"
+                        [items]="dembarquePorts" itemValueField="codigo" itemTextField="nombre" [canSearch]="true">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="puerto_desembarque && puerto_desembarque.codigo == 98">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_puerto_desembarque"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de Barco</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="tipo_barco" [items]="shipTypes"
+                        itemValueField="index" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable> -->
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tipo_barco">
+                        <ion-select-option value="{{ m.index }}" *ngFor="let m of shipTypes">{{ m.name }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_barco && tipo_barco.index == 98">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_tipo_barco"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Valor Aproximado</ion-label>
+                    <ion-input type="text" [(ngModel)]="valor_embarcacion"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Vender Productos a</ion-label>
+                    <ion-input [(ngModel)]="venta_productos_a"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>1" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- five tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==5">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Características
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Calado (m)</ion-label>
+                    <ion-input type="number" [(ngModel)]="calado"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Eslora (LOA)m</ion-label>
+                    <ion-input type="number" [(ngModel)]="eslora"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Manga ext. (m)</ion-label>
+                    <ion-input type="number" [(ngModel)]="manga"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tonelaje R. Neto (TRN)</ion-label>
+                    <ion-input type="number" [(ngModel)]="tonelaje" placeholder="TRN"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tonelaje R. Bruto (TRB)</ion-label>
+                    <ion-input type="number" [(ngModel)]="tonelaje_registro_bruto" placeholder="TRB"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Potencia Motor Ppal.</ion-label>
+                    <ion-input type="number" [(ngModel)]="potencia_motor_ppal" placeholder="Motor"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Unidad de potencia</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="unidad_potencia"
+                        [items]="unityPotences" itemValueField="code" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable> -->
+                    <ion-select placeholder="Seleccione" [(ngModel)]="unidad_potencia">
+                        <ion-select-option value="{{ m.code }}" *ngFor="let m of unityPotences">{{ m.name }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="unidad_potencia && unidad_potencia.id == 3">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otra_unidad_potencia"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Material Casco</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="material_casco"
+                        [items]="materialsCasco" itemValueField="id" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable> -->
+                    <ion-select placeholder="Seleccione" [(ngModel)]="material_casco">
+                        <ion-select-option value="{{ m.id }}" *ngFor="let m of materialsCasco">{{ m.name }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="material_casco && material_casco.id == 98">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_material_casco"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de Propulsión</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="tipo_propulsion"
+                        [items]="tipoPropulsion" itemValueField="code" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable> -->
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tipo_propulsion">
+                        <ion-select-option value="{{ m.code }}" *ngFor="let m of tipoPropulsion">{{ m.name }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Número de bodegas</ion-label>
+                    <ion-input type="number" [(ngModel)]="numero_bodegas" placeholder="Bodegas.."></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Alto de la bodega</ion-label>
+                    <ion-input type="number" (ionChange)="calculateSize()" [(ngModel)]="alto_bodegas"
+                        placeholder="Metros.."></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Largo de la bodega</ion-label>
+                    <ion-input type="number" (ionChange)="calculateSize()" [(ngModel)]="largo_bodegas"
+                        placeholder="Metros.."></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Ancho de la bodega</ion-label>
+                    <ion-input type="number" (ionChange)="calculateSize()" [(ngModel)]="ancho_bodegas"
+                        placeholder="Metros.."></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Capacidad de la bodega (m3)</ion-label>
+                    <ion-input type="number" [(ngModel)]="capacidad_bodegas" placeholder="m3" readonly="true"
+                        style="background: #F2f2f2"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de conservación del pescado</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="tipo_conservacion"
+                        [items]="conservationFish" itemValueField="id" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_conservacion && tipo_conservacion.id == 98">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_tipo_conservacion"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Nombre del Propietario</ion-label>
+                    <ion-input type="text" [(ngModel)]="nombre_propietario"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de identificación</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="tipo_identificacion">
+                        <ion-select-option value="CC">C.C</ion-select-option>
+                        <ion-select-option value="CE">C.E</ion-select-option>
+                        <ion-select-option value="NIT">NIT</ion-select-option>
+                        <ion-select-option value="Otro">Otro</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_identificacion && tipo_identificacion == 3">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input type="text" [(ngModel)]="otro_tipo_identificacion"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Número de Identificación</ion-label>
+                    <ion-input type="text" [(ngModel)]="numero_identificacion"></ion-input>
+                </ion-item>
+            </ion-col>
+
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">
+                        Nombre del administrador o Agencia Marítima
+                    </ion-label>
+                    <ion-input type="text" [(ngModel)]="nombre_admin_agencia"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">No. tripulantes</ion-label>
+                    <ion-input type="number" [(ngModel)]="numero_tripulantes"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">No. pescadores</ion-label>
+                    <ion-input type="number" [(ngModel)]="numero_pescadores"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Artes de pesca *</ion-label>
+                    <ion-select placeholder="Seleccione" [(ngModel)]="artes_de_pesca" multiple="true">
+                        <ion-select-option *ngFor="let item of artesPesca" value="{{ item.id }}" >{{ item.nombre }}</ion-select-option>
+                       <!-- <ion-select-option value=2>Nasas</ion-select-option>
+                        <ion-select-option value=3>Buceo</ion-select-option>
+                        <ion-select-option value=98>Otro</ion-select-option> -->
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('4')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Otro arte de pesca ¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_arte_pesca"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Valor Arte de pesca</ion-label>
+                    <ion-input type="number" [(ngModel)]="valor_arte_pesca"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Zona de pesca</ion-label>
+                    <ion-input type="text" [(ngModel)]="zona_pesca"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Denominación del arte de pesca tipo Sedal ó de anzuelo</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="denominacion_arte_pesca"
+                        [items]="denominacionesAnzuelo" itemValueField="id" itemTextField="name" [canSearch]="true">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12"
+                *ngIf="denominacion_arte_pesca && denominacion_arte_pesca.id == 98 && artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otra_denominacion_arte_pesca"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de Anzuelo</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="tipo_anzuelo"
+                        [items]="tiposAnzuelos" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tamaño de Anzuelo</ion-label>
+                    <ion-input type="text" [(ngModel)]="tamano_anzuelo"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Cantidad de Anzuelos</ion-label>
+                    <ion-input type="number" [(ngModel)]="cantidad_anzuelos"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Longitud de línea madre (Brazas)</ion-label>
+                    <ion-input type="number" [(ngModel)]="longitud_linea_madre"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Material de la Línea Madre</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="material_linea_madre"
+                        [items]="materialesLineaMadre" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Material de los Bajantes</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="material_bajantes"
+                        [items]="mateterialesBajantes" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12"
+                *ngIf="material_bajantes && material_bajantes.id == 4 && artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_material_bajantes"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('1')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Cantidad total de Líneas</ion-label>
+                    <ion-input type="number" [(ngModel)]="cantidad_total_lineas"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('2')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Denominación del arte de pesca tipo Trampas o nasas</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="denominacion_alerta"
+                        [items]="denomincacionArtesPesca" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12"
+                *ngIf="denominacion_alerta && denominacion_alerta.id == 4 && artes_de_pesca && artes_de_pesca.includes('2')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otra_denominacion_del_arte"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('2')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Cantidad de Trampas o Nasas</ion-label>
+                    <ion-input type="number" [(ngModel)]="cantidad_trampas_nasas"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('2')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Material principal de la trampa o nasa</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="material_ppal_trampas"
+                        [items]="materialPpalTrampa" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12"
+                *ngIf="material_ppal_trampas && material_ppal_trampas.id == 8 && artes_de_pesca && artes_de_pesca.includes('2')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_material_ppal"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('3')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de artefactos de herir o aferrar</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="tipo_artefactos"
+                        [items]="tiposDeArtefacto" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12"
+                *ngIf="tipo_artefactos && tipo_artefactos.id == 7 && artes_de_pesca && artes_de_pesca.includes('3')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_tipo_artefacto"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('3')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Cantidad de Artefactos</ion-label>
+                    <ion-input type="number" [(ngModel)]="cantidad_artefactos"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12" *ngIf="artes_de_pesca && artes_de_pesca.includes('3')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Material del artefacto</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="material_artefacto"
+                        [items]="materialesArtefacto" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12"
+                *ngIf="material_artefacto && material_artefacto.id == 4 && artes_de_pesca && artes_de_pesca.includes('3')">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_material_artefacto"></ion-input>
+                </ion-item>
+            </ion-col>
+
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Uso de Dispositivos Agregadores de Peces - FAD (Fish Aggregating
+                        Device)</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="uso_dispositivos"
+                        [items]="booleans" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Tipo de FAD utilizados</ion-label>
+                    <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="tipo_fad_usados"
+                        [items]="tiposFads" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" *ngIf="tipo_fad_usados && tipo_fad_usados.id == 6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">¿Cuál?</ion-label>
+                    <ion-input [(ngModel)]="otro_tipo_fad_usados"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Cantidad de FAD utilizados</ion-label>
+                    <ion-input type="number" [(ngModel)]="cantidad_fad_usados"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Componentes FAD</ion-label>
+                    <ion-input [(ngModel)]="componentes_fad"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>1" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- six tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==6">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Ayudas a la Navegación
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Cartas de Navegación</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="cartas_navegacion"
+                        [items]="booleans" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable> -->
+                    <ion-select [(ngModel)]="cartas_navegacion">
+                        <ion-select-option value="Si">Si</ion-select-option>
+                        <ion-select-option value="No">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Compas Magnetico</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="compas_magnetico"
+                        [items]="booleans" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable> -->
+                    <ion-select [(ngModel)]="compas_magnetico">
+                        <ion-select-option value="Si">Si</ion-select-option>
+                        <ion-select-option value="No">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Gps</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="gps" [items]="booleans"
+                        itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable> -->
+                    <ion-select [(ngModel)]="gps">
+                        <ion-select-option value="Si">Si</ion-select-option>
+                        <ion-select-option value="No">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Loran</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="loran" [items]="booleans"
+                        itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable> -->
+                    <ion-select [(ngModel)]="loran">
+                        <ion-select-option value="Si">Si</ion-select-option>
+                        <ion-select-option value="No">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Radar</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="radar" [items]="booleans"
+                        itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable> -->
+                    <ion-select [(ngModel)]="radar">
+                        <ion-select-option value="Si">Si</ion-select-option>
+                        <ion-select-option value="No">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Ecosonda</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="ecosonda" [items]="booleans"
+                        itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable> -->
+                    <ion-select [(ngModel)]="ecosonda">
+                        <ion-select-option value="Si">Si</ion-select-option>
+                        <ion-select-option value="No">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="6">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Radio de Comunicación</ion-label>
+                    <!-- <ionic-selectable item-content placeholder="Seleccione" [(ngModel)]="radios_comunicacion"
+                        [items]="booleans" itemValueField="id" itemTextField="name" [canSearch]="false">
+                    </ionic-selectable> -->
+                    <ion-select [(ngModel)]="radios_comunicacion">
+                        <ion-select-option value="Si">Si</ion-select-option>
+                        <ion-select-option value="No">No</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col *ngIf="actualTab>1" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="nextTab()">
+                    Continuar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- seven tab -->
+    <ion-grid class="marginInitial" *ngIf="actualTab==7">
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Observaciones
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col size="12">
+                <ion-item lines="none">
+                    <ion-label position="stacked">Observaciones</ion-label>
+                    <ion-textarea [(ngModel)]="observations"></ion-textarea>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-text>
+                    <h2>
+                        Imágenes
+                    </h2>
+                </ion-text>
+            </ion-col>
+            <ion-col>
+                <img src="../../../assets/images/thumb-add-imagen.png" class="imgAdd" (click)="uPloadNewPhoto()">
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="fotos_embarcacion.length>0" class="marginTop" align="center">
+            <ion-col size="4" *ngFor=" let image of fotos_embarcacion; let i=index">
+                <img src="{{ image.image }}" class="imgAdd">
+                <ion-icon name="close" class="deleteIcon" (click)="deleteImages(i)"></ion-icon>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col *ngIf="actualTab>1" size="6" align="center">
+                <ion-button (click)="antTab()">
+                    Volver
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" align="center">
+                <ion-button (click)="saveInLocal()">
+                    Finalizar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

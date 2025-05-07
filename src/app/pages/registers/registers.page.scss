@@ -1,0 +1,241 @@
+ion-content{
+    --background: #FAFAFA;
+    background: #FAFAFA;
+    ion-grid{
+        &.headerGrid{
+            position: fixed;
+            width: 100%;
+            z-index: 99999;
+            ion-row{
+                padding: 20px;
+                background: #fff;
+                border-bottom: 2px solid #e6e6e6;
+                ion-col{
+                    &.active{
+                        border-bottom: 3px solid #FED610;
+                        padding-bottom: 5px;
+                    }
+                    ion-text{
+                        font-family: 'Poppins', sans-serif;
+                        &.active{
+                            color: #000043;
+                        }
+                        &.inactive{
+                            color: #DBDBDB;
+                            border-bottom: 0;
+                        }
+                        @media (min-width: 319px) {
+                            font-size: 14px;
+                        }
+                        @media (min-width: 374px) {
+                            font-size: 16px;
+                        }
+                        @media (min-width: 415px) {
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
+        }   
+        ion-row{
+            &.marginInitial{
+                margin-top: 110px;
+            }
+            &.marginTop{
+                margin-top: 10px;
+            }
+            ion-col{
+                ion-button{
+                    font-family: 'Poppins', sans-serif;
+                    --border-radius: 50px;
+                    --background: #2f6da8; /* Old browsers */
+                    --background: -moz-linear-gradient(left, #2f6da8 0%, #3192c8 76%, #73ad7d 100%); /* FF3.6-15 */
+                    --background: -webkit-linear-gradient(left, #2f6da8 0%,#3192c8 76%,#73ad7d 100%); /* Chrome10-25,Safari5.1-6 */
+                    --background: linear-gradient(to right, #2f6da8 0%,#3192c8 76%,#73ad7d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    --background-activated:  #006fa6;
+                    --background-focused: #006fa6;
+                    --background-hover: #006fa6;
+                    min-width: 80%;
+                    font-size: 16px;
+                }
+                ion-card{
+                    &.specialCard{
+                        padding-bottom: 30px;
+                    }
+                    ion-icon{
+                        &.detail{
+                            background-color: #3192c8;
+                            color: #ffffff;
+                            font-size: 20px;
+                            padding: 5px;
+                            border-radius: 50%;
+                            position: absolute;
+                            top: 5px;
+                            right: 5px;
+                        }
+                        &.trash{
+                            background-color: red;
+                            color: #ffffff;
+                            font-size: 20px;
+                            padding: 5px;
+                            border-radius: 50%;
+                            position: absolute;
+                            top: 65px;
+                            right: 5px;
+                        }
+                    }
+                    div{
+                        display: flex;
+                        align-items: center;
+                        margin-top: 10px;
+                        width: 50px;
+                        height: 50px; 
+                        overflow: hidden;
+                        border-radius: 50%;
+                        img{
+                            display: block;
+                            object-fit: cover;
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                    img{
+                        &.imgCircle{
+                            margin: 20px 0 0 10px;
+                            border-radius: 50%;
+                            max-width: 90%;  
+                            border: 2px solid #FED610;
+                        }
+                        &.imgIcon{
+                            width: 15px;
+                        }
+                        &.imgButton{
+                            width: 30px;
+                        }
+                    }
+                    ion-item{
+                        margin: 0;
+                        padding: 0;
+                        --padding-start	: 0;
+                        --padding-end: 0;
+                        margin: 0;
+                    }
+                    ion-text{
+                        font-family: 'Poppins', sans-serif;
+                        margin: 0;
+                        h1{
+                            margin-bottom: 0;
+                            color: #414141;
+                            font-weight: lighter;
+                            @media (min-width: 319px) {
+                                font-size: 18px;
+                            }
+                            @media (min-width: 374px) {
+                                font-size: 20px;
+                            }
+                            @media (min-width: 415px) {
+                                font-size: 25px;
+                            }
+                        }
+                        h4{
+                            margin: 0 0 0 10px;
+                            color: #414141;
+                            font-weight: lighter;
+                            @media (min-width: 319px) {
+                                font-size: 13px;
+                            }
+                            @media (min-width: 374px) {
+                                font-size: 14px;
+                            }
+                            @media (min-width: 415px) {
+                                font-size: 18px;
+                            }
+                            span{
+                                font-weight: normal;
+                                @media (min-width: 319px) {
+                                    font-size: 16px;
+                                }
+                                @media (min-width: 374px) {
+                                    font-size: 17px;
+                                }
+                                @media (min-width: 415px) {
+                                    font-size: 21px;
+                                }
+                                &.pending{
+                                    color: red;
+                                }
+                                &.firmed{
+                                    color: #994F00;
+                                }
+                                &.upload{
+                                    color: #168500;
+                                }
+                            }
+                        }  
+                        p{
+                            margin: 5px 0 0;
+                            color: #414141;
+                            font-weight: normal;
+                            @media (min-width: 319px) {
+                                font-size: 11px;
+                            }
+                            @media (min-width: 374px) {
+                                font-size: 12px;
+                            }
+                            @media (min-width: 415px) {
+                                font-size: 15px;
+                            }
+                        } 
+                    }
+                    ion-button{
+                        font-family: 'Poppins', sans-serif;
+                        @media (min-width: 319px) {
+                            font-size: 12px;
+                            width: 90%;
+                        }
+                        @media (min-width: 374px) {
+                            font-size: 13px;
+                            width: 90%;
+                        }
+                        @media (min-width: 415px) {
+                            min-width: 90%;
+                        }
+                        &.upload{
+                            --color: #ffffff;
+                            --background: #2f6da8; /* Old browsers */
+                            --background: -moz-linear-gradient(left, #2f6da8 0%, #3192c8 76%, #73ad7d 100%); /* FF3.6-15 */
+                            --background: -webkit-linear-gradient(left, #2f6da8 0%,#3192c8 76%,#73ad7d 100%); /* Chrome10-25,Safari5.1-6 */
+                            --background: linear-gradient(to right, #2f6da8 0%,#3192c8 76%,#73ad7d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                            --background-activated:  #006fa6;
+                            --background-focused: #006fa6;
+                            --background-hover: #006fa6;
+                        }
+                        &.edit{
+                            --background: #bad320;
+                            --background-activated:  #869819;
+                            --background-focused: #869819;
+                            --background-hover: #869819;
+                            --color: #000015;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ion-row#templateAlt{
+        margin: 20px 20px 0;
+        ion-text{
+            font-family: 'Poppins', sans-serif;
+            color: #414141;
+            @media (min-width: 319px) {
+                font-size: 14px;
+            }
+            @media (min-width: 374px) {
+                font-size: 16px;
+            }
+            @media (min-width: 415px) {
+                font-size: 20px;
+            }
+        }
+    }
+}

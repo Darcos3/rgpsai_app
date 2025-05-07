@@ -1,0 +1,29 @@
+ion-header{
+    ion-toolbar{
+        --background: #2f6da8; /* Old browsers */
+        --background: -moz-linear-gradient(left, #2f6da8 0%, #3192c8 76%, #73ad7d 100%); /* FF3.6-15 */
+        --background: -webkit-linear-gradient(left, #2f6da8 0%,#3192c8 76%,#73ad7d 100%); /* Chrome10-25,Safari5.1-6 */
+        --background: linear-gradient(to right, #2f6da8 0%,#3192c8 76%,#73ad7d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        padding-top: 30px;
+        padding-bottom: 10px;
+        ion-title{
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            text-align: center;
+        }
+        ion-menu-button{
+            --color: #FFFFFF;
+        }
+        ion-back-button{
+            --color: #FFFFFF;
+        }
+        img{
+            width: 25px;
+            margin-right: 10px;
+        }
+        ion-icon{
+            color: #ffffff;
+            font-size: 24px;
+        }
+    }
+}

@@ -1,0 +1,942 @@
+<app-menu TitleBar="Detalle de Inspección Industrial" isMenuVisible="false" isBackVisible="true"></app-menu>
+
+<ion-content>
+    <!-- first tab -->
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-card>
+                    <ion-row class="justify-content-center align-items-center">
+                        <ion-col size="9">
+                            <ion-row>
+                                <ion-col>
+                                    <ion-text>
+                                        <h1>
+                                            {{ nombre_barco ? nombre_barco : 'Indefinido' }}
+                                        </h1>
+                                    </ion-text>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <img src="../../../assets/images/user.png" class="imgIcon">
+                                        <ion-text>
+                                            <h4><b>Administrador</b></h4>
+                                        </ion-text>
+                                    </ion-item>
+                                    <ion-text>
+                                        <h4>{{ nombre_admin_agencia ? nombre_admin_agencia : 'Indefinido' }}
+                                        </h4>
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <img src="../../../assets/images/build.png" class="imgIcon">
+                                        <ion-text>
+                                            <h4><b>Permisionario</b></h4>
+                                        </ion-text>
+                                    </ion-item>
+                                    <ion-text>
+                                        <h4>{{ permisionario ? permisionario : 'Indefinido' }}
+                                        </h4>
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <img src="../../../assets/images/map.png" class="imgIcon">
+                                        <ion-text>
+                                            <h4><b>Lugar Registro</b></h4>
+                                        </ion-text>
+                                    </ion-item>
+                                    <ion-text>
+                                        <h4>{{ lugar_matricula ? lugar_matricula : 'Indefinido' }}
+                                        </h4>
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <img src="../../../assets/images/calendar.png" class="imgIcon">
+                                        <ion-text>
+                                            <h4><b>Solicitud de Inspección</b></h4>
+                                        </ion-text>
+                                    </ion-item>
+                                    <ion-text>
+                                        <h4>{{ fecha_matricula ? fecha_matricula.substr(0, 10) : 'Indefinido' }}
+                                        </h4>
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <ion-text>
+                                            <h4>
+                                                <b>Estado: </b>
+                                                <span
+                                                    [ngClass]="status == 1 ? 'pending' : status == 2 ? 'firmed' : 'upload'">
+                                                    {{ status == 1 ? ' Pendiente' : status == 2 ? ' Firmado' : ' Guardado' }}
+                                                </span>
+                                            </h4>
+                                        </ion-text>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                        </ion-col>
+                        <ion-col size="3">
+                            <img src="../../../assets/images/barco.png" class="imgCircle">
+                        </ion-col>
+                        <ion-col size="12">
+                            <!-- Notes in a List -->
+                            <ion-list>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Lugar
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ lugar ? lugar.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Fecha de expedición
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ fecha_expedicion ? fecha_expedicion.substr(0, 10) : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Radicado
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ radicado ? radicado : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Permisionario
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ permisionario }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Número de Nit
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ nit }} - {{ codigo_verificacion }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Nombre Barco
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ nombre_barco ? nombre_barco : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Matrícula Barco
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ numero_matricula ? numero_matricula : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Lugar Expedición Matrícula
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ lugar_matricula ? lugar_matricula : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Fecha Expedición Matrícula
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ fecha_matricula ? fecha_matricula.substr(0, 10) : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Fecha Vencimiento Matrícula
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ vencimiento_matricula ? vencimiento_matricula.substr(0, 10) : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Bandera
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ bandera ? bandera.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Puerto de registro
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ puerto_registro ? puerto_registro : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="puerto_registro && puerto_registro.codigo == 98">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Puerto de Registro?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_puerto_registro ? otro_puerto_registro : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Puerto de desembarque
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ puerto_desembarque ? puerto_desembarque.nombre : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="puerto_desembarque && puerto_desembarque.codigo == 98">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Puerto de desembarque?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_puerto_desembarque ? otro_puerto_desembarque : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de Barco
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tipo_barco ? tipo_barco : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="tipo_barco && tipo_barco.index == 98">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Tipo de Barco?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_tipo_barco ? otro_tipo_barco : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Valor Embarcación
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ valor_embarcacion ? valor_embarcacion : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Venta de productos a
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ venta_productos_a ? venta_productos_a : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Calado (m)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ calado ? calado : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Manga (m)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ manga ? manga : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Eslora (LOA)m
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ eslora ? eslora : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tonelaje R. Neto (TRN)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tonelaje ? tonelaje : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tonelaje Registro Bruto (TRB)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tonelaje_registro_bruto ? tonelaje_registro_bruto : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Potencia Motor Ppal
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ potencia_motor_ppal ? potencia_motor_ppal : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Unidad de Potencia
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ unidad_potencia ? unidad_potencia : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="unidad_potencia == 3">
+                                    <ion-label class="ion-text-wrap">
+                                        Otra unidad de potencia
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otra_unidad_potencia ? otra_unidad_potencia : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Material Casco
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ material_casco ? material_casco : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="material_casco == 98">
+                                    <ion-label class="ion-text-wrap">
+                                        Otro material casco
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_material_casco ? otro_material_casco : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Número de Bodegas
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ numero_bodegas ? numero_bodegas : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Alto de Bodegas (m)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ alto_bodegas ? alto_bodegas : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Largo de Bodegas (m)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ largo_bodegas ? largo_bodegas : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Ancho de Bodegas (m)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ ancho_bodegas ? ancho_bodegas : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Capacidad de la Bodega (m3)
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ capacidad_bodegas ? capacidad_bodegas : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de conservación
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tipo_conservacion ? tipo_conservacion.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="tipo_conservacion == 98">
+                                    <ion-label class="ion-text-wrap">
+                                        Otro tipo de conservación
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_tipo_conservacion ? otro_tipo_conservacion : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Nombre Propietario
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ nombre_propietario ? nombre_propietario : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de documento
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tipo_identificacion ? (tipo_identificacion == 1 ? 'C.C' :  tipo_identificacion == 2 ? 'C.E' : 'Otro') : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="tipo_identificacion && tipo_identificacion == 3">
+                                    <ion-label class="ion-text-wrap">
+                                        Otro tipo de documento
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_tipo_identificacion ? otro_tipo_identificacion : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Número de documento
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ numero_identificacion ? numero_identificacion : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Nombre Admin Agencia
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ nombre_admin_agencia ? nombre_admin_agencia : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Número de Tripulantes
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ numero_tripulantes ? numero_tripulantes : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Número de Pescadores
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ numero_pescadores ? numero_pescadores : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Artes de pesca
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item lines="none">
+                                    <ion-note slot="start">
+
+                                        {{ artes_de_pesca && artes_de_pesca.includes('1') ? 'Sedal o de Anzuelo | ' : '' }}
+                                        {{ artes_de_pesca && artes_de_pesca.includes('2') ? 'Nasas |' : '' }}
+                                        {{ artes_de_pesca && artes_de_pesca.includes('3') ? 'Buceo | ' : '' }}
+                                        {{ artes_de_pesca && artes_de_pesca.includes('98') ? 'Otro' : '' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="artes_de_pesca && artes_de_pesca.includes('4')">
+                                    <ion-label class="ion-text-wrap">
+                                        Otro Arte de pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_arte_pesca ? otro_arte_pesca : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Valor Arte de Pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ valor_arte_pesca ? valor_arte_pesca : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Zona de Pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ zona_pesca ? zona_pesca : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Denominación Arte de Pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ denominacion_arte_pesca ? denominacion_arte_pesca.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="denominacion_arte_pesca && denominacion_arte_pesca.id == 98">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otra Denominación Arte de Pesca?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otra_denominacion_arte_pesca ? otra_denominacion_arte_pesca : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de Anzuelo
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tipo_anzuelo ? tipo_anzuelo.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tamaño de Anzuelo
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tamano_anzuelo ? tamano_anzuelo : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Cantidad de Anzuelos
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ cantidad_anzuelos ? cantidad_anzuelos : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Longitud Línea Madre
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ longitud_linea_madre ? longitud_linea_madre : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Material Línea Madre
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ material_linea_madre ? material_linea_madre.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Material Bajante
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ material_bajantes ? material_bajantes.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="material_bajantes && material_bajantes.id == 4">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Material Bajante?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_material_bajantes ? otro_material_bajantes : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Cantidad Líneas Madre
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ cantidad_total_lineas ? cantidad_total_lineas : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Denominación del arte de pesca tipo Trampas o nasas
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ denominacion_alerta ? denominacion_alerta.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="denominacion_alerta && denominacion_alerta.id == 4">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otra Denominación del arte de pesca tipo Trampas o nasas?
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ otra_denominacion_del_arte }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Cantidad de Trampas O Nasas
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ cantidad_trampas_nasas ? cantidad_trampas_nasas : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Material Ppal Trampas
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ material_ppal_trampas ? material_ppal_trampas.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="material_ppal_trampas && material_ppal_trampas.id == 8">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Material Ppal Trampas?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_material_ppal ? otro_material_ppal : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipos de Artefacto
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tipo_artefactos ? tipo_artefactos.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="tipo_artefactos && tipo_artefactos.id == 7">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Tipo de Artefacto?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_tipo_artefacto ? otro_tipo_artefacto : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Cantidad de Artefactos
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ cantidad_artefactos ? cantidad_artefactos : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Material de Artefactos
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ material_artefacto ? material_artefacto.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="material_artefacto && material_artefacto.id == 4">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Material de Artefacto?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_material_artefacto ? otro_material_artefacto : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Uso de Dispositivos
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ uso_dispositivos ? uso_dispositivos.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de FADS Usados
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ tipo_fad_usados ? tipo_fad_usados.name : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item *ngIf="tipo_fad_usados && tipo_fad_usados.id == 6">
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Otro Tipo de FADS?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ otro_tipo_fad_usados ? otro_tipo_fad_usados : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Cantidad de FADS Usados
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ cantidad_fad_usados ? cantidad_fad_usados : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Componentes de FADS
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ componentes_fad ? componentes_fad : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Cartas de Navegación?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ cartas_navegacion ? cartas_navegacion : 'Indefinido' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Compas Magnético?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ compas_magnetico ? compas_magnetico : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Gps?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ gps ? gps : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Loran?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ loran ? loran : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Radar?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ radar ? radar : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Ecosonda?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ ecosonda ? ecosonda : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        ¿Radios de Comunicación?
+                                    </ion-label>
+                                    <ion-note slot="end">
+
+                                        {{ radios_comunicacion ? radios_comunicacion : 'N/A' }}
+
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item lines="none">
+                                    <ion-label class="ion-text-wrap">
+                                        Observaciones
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-note>
+                                        {{ observations ? observations : 'Indefinido' }}
+                                    </ion-note>
+                                </ion-item>
+                            </ion-list>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="fotos_embarcacion.length>0" class="marginTop" align="center">
+                        <ion-col size="4" *ngFor=" let image of fotos_embarcacion">
+                            <img src="{{ image.image }}" class="imgAdd">
+                        </ion-col>
+                    </ion-row>
+                </ion-card>
+            </ion-col>
+            <ion-col size="12" align="center">
+                <ion-label class="firma">Firma del documento</ion-label><br>
+                <ion-item *ngIf="!signature || status == 1">
+                    <!---
+                        <ion-signaturepad [(ngModel)]="signature" canvasWidth="300" canvasHeight="300" backgroundColor="#ffffff">
+                        </ion-signaturepad>
+                    -->
+                    <canvas #signaturePad height="300" backgroundColor="#ffffff"></canvas>
+                </ion-item>
+                <img src="{{ signature }}" *ngIf="signature && status != 1">
+                <ion-item>
+                    {{ nombre_representante ? nombre_representante : 'Indefinido' }}
+                </ion-item>
+                <ion-item *ngIf="tipo_identificacion_representante!=3">
+                    {{ tipo_identificacion_representante==1 ? 'CC' : tipo_identificacion_representante==2 ? 'CE' : tipo_identificacion_representante==3 ? 'Otro' : 'Indefinido' }}
+                </ion-item>
+                <ion-item *ngIf="tipo_identificacion_representante==3">
+                    {{ otro_tipo_identificacion_representante ? otro_tipo_identificacion_representante : 'Indefinido' }}
+                </ion-item>
+                <ion-item>
+                    {{ numero_identificacion_representante ? numero_identificacion_representante : 'Indefinido' }}
+                </ion-item>
+                <ion-item>
+                    {{ cargo_representante ? cargo_representante : 'Indefinido' }}
+                </ion-item>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+    <ion-grid>
+        <ion-row>
+            <ion-col align="center">
+                <ion-button [disabled]="status != 1" (click)="SignatureDoc()">
+                    Finalizar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

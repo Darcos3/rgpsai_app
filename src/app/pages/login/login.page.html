@@ -1,0 +1,39 @@
+<app-menu TitleBar="Iniciar Sesión" isMenuVisible="false" isBackVisible="false"></app-menu>
+
+<ion-content>
+    <ion-grid>
+        <ion-row align="center">
+            <ion-col>
+                <img src="../../../assets/images/logo.png" class="imgTop">
+            </ion-col>
+        </ion-row>
+        <ion-row class="justify-content-center align-items-center">
+            <ion-col>
+                <ion-card>                  
+                    <ion-card-content>
+                        <form [formGroup]="loginForm">
+                            <ion-list>
+                                <ion-item lines="none">
+                                    <ion-input type="emal" autofocus="on" clearInput="true" placeholder="Correo electónico" required="true" [(ngModel)]="emailField" formControlName="emailField"></ion-input>
+                                    <ion-icon name="mail-outline" slot="start"></ion-icon>
+                                </ion-item>
+                                <ion-item lines="none">
+                                    <ion-input type="password" clearInput="true" placeholder="Contraseña" required="true" [(ngModel)]="passField" formControlName="passField"></ion-input>
+                                    <ion-icon name="lock-open-outline" slot="start"></ion-icon>
+                                </ion-item>
+                            </ion-list>
+                        </form>
+                        <ion-row align="center">
+                            <ion-col>
+                                <ion-button (click)="getLogin()" [disabled]="loginForm.invalid">
+                                    Ingresar
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <footer></footer>
+</ion-content>

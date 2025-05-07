@@ -1,0 +1,601 @@
+<app-menu TitleBar="Detalle de pescador" isMenuVisible="false" isBackVisible="true"></app-menu>
+
+<ion-content>
+    <!-- first tab -->
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-card>
+                    <ion-row class="justify-content-center align-items-center">
+                        <ion-col size="9">
+                            <ion-row>
+                                <ion-col>
+                                    <ion-text>
+                                        <h1>
+                                            {{ name }} {{ lastname }}
+                                        </h1>
+                                    </ion-text>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <img src="../../../assets/images/user.png" class="imgIcon">
+                                        <ion-text>
+                                            <h4><b>Documento</b></h4>
+                                        </ion-text>
+                                    </ion-item>
+                                    <ion-text>
+                                        <h4>
+                                            {{ type_of_card ? type_of_card : 'No asignado' }} - 
+                                            {{ identification_number ? identification_number : 'No asignado' }}
+                                        </h4>
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <img src="../../../assets/images/build.png" class="imgIcon">
+                                        <ion-text>
+                                            <h4><b>Municipio</b></h4>
+                                        </ion-text>
+                                    </ion-item>
+                                    <ion-text>
+                                        <h4>
+                                            {{ department ? department.nombre : 'No asignado' }}
+                                        </h4>
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <img src="../../../assets/images/map.png" class="imgIcon">
+                                        <ion-text>
+                                            <h4><b>Fecha de actualización</b></h4>
+                                        </ion-text>
+                                    </ion-item>
+                                    <ion-text>
+                                        <h4>
+                                            {{ update_date ? update_date : 'No asignado' }}
+                                        </h4>
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size-md="6" size-xs="12">
+                                    <ion-item lines="none">
+                                        <ion-text>
+                                            <h4>
+                                                <b>Estado: </b>
+                                                <span
+                                                    [ngClass]="status == 1 ? 'pending' : status == 2 ? 'firmed' : 'upload'">
+                                                    {{ status == 1 ? ' Pendiente' : status == 2 ? ' Firmado' : ' Guardado' }}
+                                                </span>
+                                            </h4>
+                                        </ion-text>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                        </ion-col>
+                        <ion-col size="3">
+                            <div>
+                                <!-- <img src="{{ photo ? photo : '../../../assets/images/user.png' }}"> -->
+                                <img src="https://backend.rgpsai.org/storage/fishermen/{{ photo }}"  *ngIf="photo != null" class="imgAdd"/>
+                                <img src="../../../assets/images/user.png"  *ngIf="photo == null" class="imgAdd"/>
+                            </div>
+                        </ion-col>
+                        <ion-col size="12">
+                            <!-- Notes in a List -->
+                            <ion-list>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Municipio
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ department ? department.nombre : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Radicado
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ filed ? filed : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Fecha Radicado
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ filing_date ? filing_date : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Copia documento de identificación
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ copy_identification_document ? copy_identification_document : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Copia OCCRE
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ copy_occre ? copy_occre : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Copia afiliación de salud
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ copy_sisben ? copy_sisben : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Certificación / Acreditación
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ accreditation_certificate ? accreditation_certificate : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Certificación expedida por
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-note slot="end">
+                                        {{ certification_issued_by ? certification_issued_by.name : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Vigencia del permiso
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ vigencia_permiso ? vigencia_permiso+' Años' : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Fecha de expedición
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ expedition_date ? expedition_date : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Fecha de expiración
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ expiration_date ? expiration_date : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Nombre(s) del pescador
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ name ? name : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Apellido(s) del pescador
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ lastname ? lastname : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de documento
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ type_of_card ? type_of_card : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Número de documento
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ identification_number ? identification_number : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Clasificación de certificación OCCRE
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ occre ? occre : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        No. OCCRE
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ no_occre ? no_occre : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Nacionalidad
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ nationality ? nationality.name : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Email
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ email ? email : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Dirección
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ address ? address : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Teléfono
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ phone ? phone : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Organización / Cooperativa
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ organization_cooperative ? organization_cooperative : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Nombre de la organización
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-note slot="end">
+                                        {{ organization_name ? organization_name.name : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Zona de desembarque
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ dembarque_port ? dembarque_port.nombre : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Zona frecuente de pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ zona_frecuente_pesca ? zona_frecuente_pesca : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Zona frecuente de pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ zona_frecuente_pesca ? zona_frecuente_pesca : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de embarcación artesanal
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ tipo_embarcacion_artesanal ? tipo_embarcacion_artesanal : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Otro tipo de embarcación artesanal
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ otro_tipo_embarcacion_artesanal ? otro_tipo_embarcacion_artesanal : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de pesqueria
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-note>
+                                        {{ tipo_pesqueria && tipo_pesqueria.includes('1') ? 'Langosta | ' : '' }}
+                                        {{ tipo_pesqueria && tipo_pesqueria.includes('2') ? 'Pesca blanca |' : '' }}
+                                        {{ tipo_pesqueria && tipo_pesqueria.includes('3') ? 'Caracol | ' : '' }}
+                                        {{ tipo_pesqueria && tipo_pesqueria.includes('4') ? 'Mutiespecífica' : '' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Artes de pesca
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-note>
+                                        {{ artes_pesca && artes_pesca.includes('1') ? 'LINE & HOOK | ' : '' }}
+                                        {{ artes_pesca && artes_pesca.includes('2') ? 'PATH / TRAPS |' : '' }}
+                                        {{ artes_pesca && artes_pesca.includes('3') ? 'REEL | ' : '' }}
+                                        {{ artes_pesca && artes_pesca.includes('4') ? 'DIVING' : '' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Reporta embarcación
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ reporta_embarcacion ? reporta_embarcacion : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Propietario de la embarcación
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ propietario_embarcacion ? propietario_embarcacion : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Documento que lo acredita
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ documento_acredita ? documento_acredita : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Embarcaciones asociadas
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-note>
+                                        <div *ngIf="data_boats && data_boats.length>0">
+                                            <span *ngFor="let item of data_boats">
+                                                {{ item.boat_request_id }} - {{ item.nombre }}
+                                            </span>
+                                        </div>
+                                        <div *ngIf="data_boats && data_boats.length==0">
+                                            <span>
+                                                Sin resultados
+                                            </span>
+                                        </div>
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Fecha de nacimiento
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ birthdate ? birthdate : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Edad
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ age ? age : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Sexo
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ genre ? genre : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Estado civil
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ marital_state ? marital_state : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Otro estado civil
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ otro_marital_state ? otro_marital_state : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Lee y escribe
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ read_write ? read_write : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Nivel educativo del pescador
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ education_level ? education_level : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Otro nivel educativo del pescador
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ otro_education_level ? otro_education_level : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Posee casa propia
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ own_home ? own_home : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Posee casa propia
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ own_home ? own_home : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tipo de servicio de salud
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ healt_service ? healt_service : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Otro tipo de servicio de salud
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ otro_healt_service ? otro_healt_service : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Tiempo en la pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ pesca_time ? pesca_time : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Otro tiempo en la pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ otro_pesca_time ? otro_pesca_time : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Dedicación
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ dedication ? dedication : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-label class="ion-text-wrap">
+                                        Horario de pesca
+                                    </ion-label>
+                                    <ion-note slot="end">
+                                        {{ hour_pesca ? hour_pesca : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+                                
+                                <ion-item lines="none">
+                                    <ion-label class="ion-text-wrap">
+                                        Observaciones
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-note>
+                                        {{ observations ? observations : 'No asignado' }}
+                                    </ion-note>
+                                </ion-item>
+                            </ion-list>
+                        </ion-col>
+                    </ion-row>
+                </ion-card>
+            </ion-col>
+            <ion-col size="12" align="center">
+                <ion-label class="firma">Firma del documento</ion-label><br>
+                <ion-item *ngIf="!signature || status == 1">
+                    <!---
+                        <ion-signaturepad [(ngModel)]="signature" canvasWidth="300" canvasHeight="300" backgroundColor="#ffffff">
+                        </ion-signaturepad>
+                    -->
+                    <canvas #signaturePad height="300" backgroundColor="#ffffff"></canvas>
+                </ion-item>
+                <img src="{{ signature }}" *ngIf="signature && status != 1">
+                <ion-item>
+                    {{ name }}  {{ lastname }}
+                </ion-item>
+                <ion-item *ngIf="tipo_identificacion_representante!=3">
+                    {{ type_of_card }} - 
+                    {{ identification_number }}
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid>
+        <ion-row>
+            <ion-col align="center">
+                <ion-button [disabled]="status != 1" (click)="SignatureDoc()">
+                    Finalizar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-toolbar>
+        <img src="../../../assets/resources/ico-filter.png" slot="end" *ngIf="isFilterVisible=='true'"> 
+        <ion-buttons slot="start" *ngIf="isBackVisible=='true'">
+            <ion-back-button text="" defaultHref="registers"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="start" *ngIf="isCloseVisible=='true'">
+            <ion-icon name="close" (click)="closeView()"></ion-icon>
+        </ion-buttons>
+        <ion-buttons slot="start" *ngIf="isBackItemVisible=='true'">
+            <ion-back-button text="" defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="isMenuVisible=='true'">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>
+            {{ TitleBar }}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
