@@ -432,7 +432,7 @@ export class PescadorPage implements OnInit {
         await loading.present();
 
         this.api.searchPescador("Bearer " + this.userToken, this.cedula_search).subscribe(response => {
-            // console.warn(response);
+            console.warn(response);
             loading.dismiss();
             if (response[0] && response[0].data && response[0].data.data && response[0].data.data[0]) {
 

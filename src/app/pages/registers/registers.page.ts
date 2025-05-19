@@ -731,7 +731,7 @@ export class RegistersPage implements OnInit {
                 this.alertUploadPescador('Registro creado exitosamente en el servidor, será eliminado de la base de datos interna.');
 
                 let items = this.dataStoragePescador.filter((item) => {
-                    item.estado = 3;
+                    // item.estado = 3;
                     return item.id === registerID;
                 });
 

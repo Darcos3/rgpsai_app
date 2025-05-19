@@ -5,24 +5,27 @@
     <!-- header fixed -->
     <ion-grid class="ion-no-padding ion-no-margin headerGrid">
         <ion-row class="ion-no-padding ion-no-margin" align="center">
+            <ion-col colspan="3">Pesca</ion-col>
+        </ion-row>
+        <ion-row class="ion-no-padding ion-no-margin" align="center">
             <ion-col class="ion-no-padding ion-no-margin {{ typeSelected==1 ? 'active' : null }}">
                 <ion-text [ngClass]="typeSelected==1 ? 'active' : 'inactive'" (click)="changeTab(1)">
-                    Pesca Industrial
+                    Industrial
                 </ion-text>
             </ion-col>
             <ion-col class="ion-no-padding ion-no-margin {{ typeSelected==2 ? 'active' : null }}">
                 <ion-text [ngClass]="typeSelected==2 ? 'active' : 'inactive'" (click)="changeTab(2)">
-                    Pesca Artesanal
+                    Artesanal
                 </ion-text>
             </ion-col>
             <ion-col class="ion-no-padding ion-no-margin {{ typeSelected==3 ? 'active' : null }}">
                 <ion-text [ngClass]="typeSelected==3 ? 'active' : 'inactive'" (click)="changeTab(3)">
-                    Pescador Artesanal
+                    Deportiva
                 </ion-text>
             </ion-col>
         </ion-row>
     </ion-grid>
-
+    <br>
     <!-- first tab -->
     <ion-grid *ngIf="typeSelected===1">
         <ion-row class="marginInitial">
